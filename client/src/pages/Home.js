@@ -34,8 +34,8 @@ function Home() {
   useEffect(() => {
     async function handleGetWeather() {
       const data = await axios.get(
-        //   `http://api.geonames.org/searchJSON?name=salem&country=IN&username=demo`
-        `http://api.weatherapi.com/v1/forecast.json?key=69e7c91397de481b86051222232507&q=${location.latitude},${location.longitude}&days=6&aqi=s`
+        //   `https://api.geonames.org/searchJSON?name=salem&country=IN&username=demo`
+        `https://api.weatherapi.com/v1/forecast.json?key=69e7c91397de481b86051222232507&q=${location.latitude},${location.longitude}&days=6&aqi=s`
       );
       console.log(data.data);
       setData(data.data);
@@ -49,7 +49,7 @@ function Home() {
       {data && (
         <MainDisplay
           currentData={data.current}
-          daysForecast={daysForecast.slice(1)}
+          hourlyForecast={daysForecast[0].hour}
         />
       )}
       {data && (

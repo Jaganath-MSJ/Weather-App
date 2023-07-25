@@ -15,7 +15,7 @@ export function formatDayTime(dateString) {
   return `${dayOfWeekName} | ${convertTo12HourFormat(dateString.split(" ")[1])}`;
 }
 
-function convertTo12HourFormat(time24) {
+export function convertTo12HourFormat(time24) {
   const [hours, minutes] = time24.split(':').map(Number);
   const period = hours >= 12 ? 'PM' : 'AM';
   const hours12 = hours % 12 || 12;
