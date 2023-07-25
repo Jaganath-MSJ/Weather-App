@@ -43,11 +43,12 @@ const Clock = styled.div`
         transform-origin: bottom left;
         &.hours {
           width: 38px;
-          height: 33px;
-          top: 14px;
+          height: 37px;
+          top: 8px;
           border-left: solid 3px rgb(136, 96, 252);
         }
         &.minutes {
+          left: 48px;
           border-left: solid 3px rgb(130, 130, 130);
         }
       }

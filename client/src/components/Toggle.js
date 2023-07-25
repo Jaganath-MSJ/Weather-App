@@ -2,23 +2,27 @@
 import React from "react";
 import "../Toogle.css";
 
-function ToggleSwitch({ tempature, setTemperature }) {
+function ToggleSwitch({ temperature, setTemperature }) {
   return (
-	<div className="toggle-switch" onClick={setTemperature}>
-		<input type="checkbox" className="checkbox"
-			name="toggle" id="toggle" checked={tempature} />
-		<label className="label" htmlFor="toggle">
-		<span className="inner" />
-		<span className="switch" />
-		</label>
-	</div>
-
+    <div className="toggle-switch" onClick={setTemperature}>
+      <input
+        type="checkbox"
+        className="checkbox"
+        name="toggle"
+        id="toggle"
+        checked={temperature}
+      />
+      <label className="label" htmlFor="toggle">
+        <span className="inner" />
+        <span className="switch" />
+      </label>
+    </div>
   );
 }
-function Toggle({ tempature, setTemperature }) {
+function Toggle({ temperature, setTemperature }) {
   return (
     <React.Fragment>
-      <ToggleSwitch tempature={tempature} setTemperature={setTemperature} />
+      <ToggleSwitch temperature={temperature} setTemperature={setTemperature} />
     </React.Fragment>
   );
 }

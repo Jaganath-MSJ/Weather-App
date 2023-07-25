@@ -5,34 +5,47 @@ import Meter from "./Meter";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
+import { getHours, getMins } from "../utils/DayFunction";
+import { reduceTime } from "../utils/TimeFunction";
 
-function SideBar({ setSearch, search }) {
+function SideBar({ todaysData, location, setSearch, search }) {
   return (
     <SideContainer>
-      <SearchBar setSearch={setSearch} search={search} />
+      <SearchBar location={location} setSearch={setSearch} search={search} />
       <div className="sunClock">
         <div>
           <p>Sun Rise</p>
           <div>
-            <MyClockComponent hours={6} minutes={20} />
-            <p>11:24</p>
-            <p>11:45</p>
+            <MyClockComponent
+              hours={getHours(todaysData.astro.sunrise)}
+              minutes={getMins(todaysData.astro.sunrise)}
+            />
+            <p>{todaysData.astro.sunrise}</p>
           </div>
         </div>
         <div>
           <p>Golden Hour</p>
           <div>
-            <MyClockComponent hours={6} minutes={30} />
-            <p>6:00 AM</p>
-            <p>6:49 PM</p>
+            <MyClockComponent
+              hours={getHours(reduceTime(todaysData.astro.sunrise, 8))}
+              minutes={getMins(reduceTime(todaysData.astro.sunrise, 8))}
+            />
+            <p>{reduceTime(todaysData.astro.sunrise, 8)}</p>
+            <MyClockComponent
+              hours={getHours(reduceTime(todaysData.astro.sunset, -7))}
+              minutes={getMins(reduceTime(todaysData.astro.sunset, -7))}
+            />
+            <p>{reduceTime(todaysData.astro.sunset, -7)}</p>
           </div>
         </div>
         <div>
           <p>Sun Set</p>
           <div>
-            <MyClockComponent hours={7} minutes={40} />
-            <p>7:21</p>
-            <p>7:24</p>
+            <MyClockComponent
+              hours={getHours(todaysData.astro.sunset)}
+              minutes={getMins(todaysData.astro.sunset)}
+            />
+            <p>{todaysData.astro.sunset}</p>
           </div>
         </div>
       </div>
@@ -40,7 +53,7 @@ function SideBar({ setSearch, search }) {
         <div className="line" />
         <FontAwesomeIcon icon={faInfo} />
       </div>
-      <Meter />
+      <Meter airQuality={todaysData.day.uv / 2 - 1} uv={todaysData.day.uv} />
     </SideContainer>
   );
 }
@@ -51,12 +64,12 @@ const SideContainer = styled.div`
   height: 100%;
   .sunClock {
     display: flex;
-    margin-top: 3rem;
+    margin-top: 1.5rem;
     gap: 2.5rem;
     & > div > div {
       background-color: rgba(255, 255, 255, 0.3);
       border-radius: 3.5rem;
-      padding-bottom: 1rem;
+      padding: 1rem 0;
     }
     & > div:nth-child(odd) {
       margin-top: 3rem;

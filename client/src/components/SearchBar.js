@@ -3,17 +3,23 @@ import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import { GoLocation } from "react-icons/go";
 
-function SearchBar({ setSearch, search, currentCity }) {
+function SearchBar({ setSearch, search, location }) {
   const [showSearch, setOnSearch] = useState(false);
   return (
     <Container>
       {!showSearch && (
         <h3>
-          <GoLocation /> Delhi, India
+          <GoLocation /> {`${location.name},${location.region}`}
         </h3>
       )}
       <div className={showSearch ? "searchInput" : "searchIcon"}>
-        {showSearch && <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} />}
+        {showSearch && (
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        )}
         <FiSearch onClick={() => setOnSearch(!showSearch)} />
       </div>
     </Container>

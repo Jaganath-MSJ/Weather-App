@@ -7,9 +7,12 @@ import {
   faDroplet,
   faCloudRain,
 } from "@fortawesome/free-solid-svg-icons";
+import DailyWeather from "./DailyWeather";
+import { formatDate } from "../utils/DateFunction";
+import { formatDayTime, formatDay } from "../utils/DayFunction";
 
-function MainDisplay() {
-  const [tempature, setTemperature] = useState(true);
+function MainDisplay({ currentData, daysForecast }) {
+  const [temperature, setTemperature] = useState(true);
   const handleToggle = (e) => {
     e.preventDefault();
     setTemperature((prevTemperature) => !prevTemperature);
@@ -18,32 +21,50 @@ function MainDisplay() {
     <Container>
       <div className="header">
         <div>
-          <img src="https://openweathermap.org/img/wn/10n@2x.png" />
+          <img
+            src={currentData.condition.icon}
+            alt={currentData.condition.text}
+          />
         </div>
         <div>
-          <Toggle tempature={tempature} setTemperature={handleToggle} />
+          <Toggle temperature={temperature} setTemperature={handleToggle} />
         </div>
       </div>
       <div className="main">
-        <h1>27&#176;C</h1>
-        <h3>17th Jun '21</h3>
-        <h5>Thrusday | 2:45 AM</h5>
+        <h1>{Math.round(temperature ? currentData.temp_c : currentData.temp_f)}&#176;{temperature ? "C" : "F"}</h1>
+        <h3>{formatDate(currentData.last_updated)}</h3>
+        <h5>{formatDayTime(currentData.last_updated)}</h5>
       </div>
       <div className="other">
         <div>
           <FontAwesomeIcon icon={faWind} />
-          <p>Wind 10 km/h</p>
+          <p>Wind {currentData.wind_kph} km/h</p>
         </div>
         <p>|</p>
         <div>
           <FontAwesomeIcon icon={faDroplet} />
-          <p>Hum 54%</p>
+          <p>Hum {currentData.humidity} %</p>
         </div>
         <p>|</p>
         <div>
           <FontAwesomeIcon icon={faCloudRain} />
-          <p>Rain 0.2%</p>
+          <p>Rain {currentData.precip_in * currentData.vis_km} %</p>
         </div>
+      </div>
+      <div className="daily">
+        {daysForecast.map((day, index) => {
+          return (
+            <DailyWeather
+              temperature={temperature}
+              temp_c={day.day.avgtemp_c}
+              temp_f={day.day.avgtemp_f}
+              img={day.day.condition.icon}
+              imgText={day.day.condition.text}
+              day={formatDay(day.date)}
+              key={index}
+            />
+          );
+        })}
       </div>
     </Container>
   );
@@ -51,7 +72,6 @@ function MainDisplay() {
 
 const Container = styled.div`
   padding: 2rem;
-  text-align: left;
   .header {
     display: flex;
     justify-content: space-between;
@@ -60,6 +80,7 @@ const Container = styled.div`
     }
   }
   .main {
+    text-align: left;
     margin-top: -3rem;
     h1 {
       font-size: 5rem;
@@ -82,6 +103,11 @@ const Container = styled.div`
         margin-top: 1rem;
       }
     }
+  }
+  .daily {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
   }
 `;
 
