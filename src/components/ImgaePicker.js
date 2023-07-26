@@ -12,13 +12,14 @@ import fog from "../images/fog.png";
 
 const icons = {
   "Sunny": sunny,
-  "Partly cloudy": partlyCloudy,
   "Overcast": cloudy,
   "Clear": clear,
+  "Partly cloudy": partlyCloudy,
   "Cloudy": partlyCloudy,
   "Patchy rain possible": patchy,
   "Light rain": normalRain,
   "Patchy light rain with thunder": normalRain,
+  "Moderate rain at times": normalRain,
   "Light rain shower": normalRain,
   "Light drizzle": drizzle,
   "Patchy light drizzle": drizzle,
@@ -28,6 +29,6 @@ const icons = {
   "Moderate or heavy rain shower": moderate,
   "Moderate rain": moderate,
   "Fog": fog,
-  "Moderate rain at times": normalRain,
+  "Mist": fog,
 };
 export default icons;

@@ -8,7 +8,7 @@ function SearchBar({ setSearch, location, backgroundFun }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestedPlaces, setSuggestedPlaces] = useState([]);
   const geonamesUsername = "raakz25";
-  const apiUrl = "http://api.geonames.org/searchJSON";
+  const apiUrl = "https://api.geonames.org/searchJSON";
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setSearchQuery(value);
