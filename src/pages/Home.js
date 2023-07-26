@@ -43,7 +43,6 @@ function Home() {
           search ? search : `${location.latitude},${location.longitude}`
         }&days=6&aqi=s`
       );
-      console.log(data.data);
       setData(data.data);
       setDaysForecast(data.data.forecast.forecastday);
     } catch (err) {
@@ -64,7 +63,6 @@ function Home() {
 
   const backgroundFun = () => {
     const hours = new Date(data.current.last_updated).getHours();
-    console.log("hours", hours);
     if (hours < 19 && hours > 4) {
       return "rgb(237, 179, 205),rgb(155, 125, 183)";
     } else {

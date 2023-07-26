@@ -2,30 +2,23 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import { GoLocation } from "react-icons/go";
+import axios from "axios";
 
 function SearchBar({ setSearch, location, backgroundFun }) {
   const [showSearch, setOnSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestedPlaces, setSuggestedPlaces] = useState([]);
-  const geonamesUsername = "raakz25";
-  const apiUrl = "https://api.geonames.org/searchJSON";
   const handleInputChange = async (event) => {
     const { value } = event.target;
     setSearchQuery(value);
     try {
-      const response = await fetch(
-        `${apiUrl}?q=${encodeURIComponent(value)}&name=${encodeURIComponent(
+      const response = await axios.request({
+        method: "GET",
+        url: `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
           value
-        )}&name_startsWith=${encodeURIComponent(
-          value
-        )}&maxRows=10&country=IN&username=${geonamesUsername}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch suggested places.");
-      }
-      const data = await response.json();
-      setSuggestedPlaces(data.geonames || []);
+        )}&format=json&featureType=city&countrycodes=IN`,
+      });
+      setSuggestedPlaces(response.data.map((data) => data.display_name));
     } catch (error) {
       console.error("Error fetching suggested places:", error);
       setSuggestedPlaces([]);
@@ -60,8 +53,11 @@ function SearchBar({ setSearch, location, backgroundFun }) {
       {showSearch && (
         <ul className="suggestions">
           {suggestedPlaces.map((place, index) => (
-            <li key={index} onClick={() => handlePlaceSelection(place.name)}>
-              {place.name}
+            <li
+              key={index}
+              onClick={() => handlePlaceSelection(place.split(",")[0])}
+            >
+              {place.split(",")[0]}
             </li>
           ))}
         </ul>
@@ -115,7 +111,7 @@ const Container = styled.div`
   }
   .suggestions {
     position: absolute;
-    width: 27rem;
+    width: 28%;
     height: max-content;
     z-index: 1;
     overflow-x: hidden;
