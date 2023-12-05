@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import Toggle from "./Toggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -59,7 +60,9 @@ function DayDisplay({ forecastday }) {
       </div>
       <div className="main">
         <h1>
-          {Math.round(temperature ? forecastday.day.avgtemp_c : forecastday.day.avgtemp_f)}
+          {Math.round(
+            temperature ? forecastday.day.avgtemp_c : forecastday.day.avgtemp_f
+          )}
           &#176;{temperature ? "C" : "F"}
         </h1>
         <h3>{formatDate(forecastday.date)}</h3>
@@ -160,7 +163,7 @@ const Container = styled.div`
     gap: 1rem;
     justify-content: space-between;
     align-items: center;
-    &>svg {
+    & > svg {
       transition: 0.3s ease-in-out;
       &:hover:last-child {
         transform: scale(1.5) translateX(4px);
@@ -171,5 +174,9 @@ const Container = styled.div`
     }
   }
 `;
+
+DayDisplay.propTypes = {
+  forecastday: PropTypes.object.isRequired,
+};
 
 export default DayDisplay;

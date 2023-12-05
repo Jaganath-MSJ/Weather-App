@@ -1,8 +1,8 @@
-// Filename: App.js
 import React from "react";
+import PropTypes from "prop-types";
 import "../Toogle.css";
 
-function ToggleSwitch({ temperature, setTemperature }) {
+export function Toggle({ temperature, setTemperature }) {
   return (
     <div className="toggle-switch" onClick={setTemperature}>
       <input
@@ -19,11 +19,10 @@ function ToggleSwitch({ temperature, setTemperature }) {
     </div>
   );
 }
-function Toggle({ temperature, setTemperature }) {
-  return (
-    <React.Fragment>
-      <ToggleSwitch temperature={temperature} setTemperature={setTemperature} />
-    </React.Fragment>
-  );
-}
+
+Toggle.propTypes = {
+  temperature: PropTypes.bool.isRequired,
+  setTemperature: PropTypes.func.isRequired,
+};
+
 export default Toggle;

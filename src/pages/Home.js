@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const [daysForecast, setDaysForecast] = useState([]);
   const [search, setSearch] = useState();
   const [location, setLocation] = useState({
@@ -38,17 +38,17 @@ function Home() {
   useEffect(() => {
     async function handleGetWeather() {
       try {
-      const data = await axios.get(
-        `https://api.weatherapi.com/v1/forecast.json?key=69e7c91397de481b86051222232507&q=${
-          search ? search : `${location.latitude},${location.longitude}`
-        }&days=6&aqi=s`
-      );
-      setData(data.data);
-      setDaysForecast(data.data.forecast.forecastday);
-    } catch (err) {
-      alert("No weather result found to searched place");
+        const data = await axios.get(
+          `https://api.weatherapi.com/v1/forecast.json?key=69e7c91397de481b86051222232507&q=${
+            search ?? `${location.latitude},${location.longitude}`
+          }&days=6&aqi=s`
+        );
+        setData(data.data);
+        setDaysForecast(data.data.forecast.forecastday);
+      } catch (err) {
+        alert("No weather result found to searched place");
+      }
     }
-  };
     if (location.latitude) {
       handleGetWeather();
     }

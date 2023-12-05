@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import Toggle from "./Toggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,13 +12,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import DailyWeather from "./DailyWeather";
 import { formatDate } from "../utils/DateFunction";
-import { formatDayTime, convertTo12HourFormat, get24Hours } from "../utils/DayFunction";
+import {
+  formatDayTime,
+  convertTo12HourFormat,
+  get24Hours,
+} from "../utils/DayFunction";
 import icons from "./ImgaePicker";
 
 function MainDisplay({ currentData, hourlyForecast }) {
   const [temperature, setTemperature] = useState(true);
-  const [startIndex, setStartIndex] = useState(get24Hours(currentData.last_updated)-2);
-  
+  const [startIndex, setStartIndex] = useState(
+    get24Hours(currentData.last_updated) - 2
+  );
+
   const handleScrollLeft = () => {
     setStartIndex((prevIndex) => prevIndex - 2);
   };
@@ -170,7 +177,7 @@ const Container = styled.div`
     gap: 1rem;
     justify-content: space-between;
     align-items: center;
-    &>svg {
+    & > svg {
       cursor: pointer;
       transition: 0.3s ease-in-out;
       &:hover:last-child {
@@ -182,5 +189,10 @@ const Container = styled.div`
     }
   }
 `;
+
+MainDisplay.propTypes = {
+  currentData: PropTypes.object.isRequired,
+  hourlyForecast: PropTypes.array.isRequired,
+};
 
 export default MainDisplay;

@@ -1,17 +1,22 @@
 import React from "react";
-import SearchBar from "./SearchBar";
-import MyClockComponent from "./SunClock";
-import Meter from "./Meter";
+import PropTypes from "prop-types";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
+import SearchBar from "./SearchBar";
+import MyClockComponent from "./SunClock";
+import Meter from "./Meter";
 import { getHours, getMins } from "../utils/DayFunction";
 import { reduceTime } from "../utils/TimeFunction";
 
 function SideBar({ todaysData, location, setSearch, backgroundFun }) {
   return (
     <SideContainer>
-      <SearchBar location={location} setSearch={setSearch} backgroundFun={backgroundFun} />
+      <SearchBar
+        location={location}
+        setSearch={setSearch}
+        backgroundFun={backgroundFun}
+      />
       <div className="sunClock">
         <div>
           <p>Sun Rise</p>
@@ -95,5 +100,12 @@ const SideContainer = styled.div`
     gap: 3rem;
   }
 `;
+
+SideBar.propTypes = {
+  todaysData: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  setSearch: PropTypes.func.isRequired,
+  backgroundFun: PropTypes.func.isRequired,
+};
 
 export default SideBar;

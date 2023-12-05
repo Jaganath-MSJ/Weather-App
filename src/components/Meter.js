@@ -1,5 +1,6 @@
 import React from "react";
 import ReactSpeedometer from "react-d3-speedometer";
+import PropTypes from "prop-types";
 
 function Meter({ airQuality, uv }) {
   return (
@@ -53,5 +54,10 @@ function Meter({ airQuality, uv }) {
     </div>
   );
 }
+
+Meter.propTypes = {
+  airQuality: PropTypes.number.isRequired,
+  uv: PropTypes.number.isRequired,
+};
 
 export default Meter;
