@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,14 +18,15 @@ import {
   convertTo12HourFormat,
   get24Hours,
 } from "../utils/DayFunction";
-import { useEffect } from "react";
 
 function MainDisplay({ currentData, hourlyForecast }) {
   const [temperature, setTemperature] = useState(true);
-  const [startIndex, setStartIndex] = useState(
-    get24Hours(currentData.last_updated) - 2
-  );
-  const [currentHourlyForecast, setHourlyForecast] = useState([]);
+  const [startIndex, setStartIndex] = useState(() => {
+    const index = get24Hours(currentData.last_updated);
+    if (index >= hourlyForecast.length - 5) return hourlyForecast.length - 5;
+    return index;
+  });
+  const [currentHourlyForecast, setCurrentHourlyForecast] = useState([]);
 
   const handleScrollLeft = () => {
     setStartIndex((prevIndex) => {
@@ -49,7 +50,7 @@ function MainDisplay({ currentData, hourlyForecast }) {
     for (let index = startIndex; index < startIndex + 5; index++) {
       hourForecast.push(hourlyForecast[index]);
     }
-    setHourlyForecast(hourForecast);
+    setCurrentHourlyForecast(hourForecast);
   }, [startIndex, hourlyForecast]);
 
   return (
