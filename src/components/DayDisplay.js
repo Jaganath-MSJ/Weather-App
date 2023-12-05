@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Toggle from "./Toggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWind,
@@ -10,39 +9,42 @@ import {
   faArrowRight,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import icons from "./ImgaePicker";
+import Toggle from "./Toggle";
 import DailyWeather from "./DailyWeather";
 import { formatDate } from "../utils/DateFunction";
 import { formatDayTime, convertTo12HourFormat } from "../utils/DayFunction";
-import icons from "./ImgaePicker";
+import { useEffect } from "react";
 
 function DayDisplay({ forecastday }) {
   const [temperature, setTemperature] = useState(true);
   const [startIndex, setStartIndex] = useState(0);
-  const handleScrollLeft = () => {
-    setStartIndex((prevIndex) => prevIndex - 2);
-  };
+  const [currentHourlyForecast, setHourlyForecast] = useState([]);
 
+  const handleScrollLeft = () => {
+    setStartIndex((prevIndex) => {
+      if (prevIndex <= 1) return prevIndex - 1;
+      return prevIndex - 2;
+    });
+  };
   const handleScrollRight = () => {
-    setStartIndex((prevIndex) => prevIndex + 2);
+    setStartIndex((prevIndex) => {
+      if (prevIndex >= forecastday.hour.length - 6) return prevIndex + 1;
+      return prevIndex + 2;
+    });
   };
   const handleToggle = (e) => {
     e.preventDefault();
     setTemperature((prevTemperature) => !prevTemperature);
   };
 
-  const hourForecast = () => {
-    return forecastday.hour.map((hour, index) => (
-      <DailyWeather
-        temperature={temperature}
-        temp_c={hour.temp_c}
-        temp_f={hour.temp_f}
-        img={hour.condition.icon}
-        imgText={hour.condition.text}
-        day={convertTo12HourFormat(hour.time.split(" ")[1])}
-        key={index}
-      />
-    ));
-  };
+  useEffect(() => {
+    const hourForecast = [];
+    for (let index = startIndex; index < startIndex + 5; index++) {
+      hourForecast.push(forecastday.hour[index]);
+    }
+    setHourlyForecast(hourForecast);
+  }, [startIndex, forecastday.hour]);
 
   return (
     <Container>
@@ -90,10 +92,19 @@ function DayDisplay({ forecastday }) {
           onClick={handleScrollLeft}
           icon={faArrowLeft}
         />
-        {hourForecast().splice(startIndex, 5)}
+        {currentHourlyForecast.map((hour) => (
+          <DailyWeather
+            temperature={temperature}
+            temp_c={hour.temp_c}
+            temp_f={hour.temp_f}
+            imgText={hour.condition.text}
+            day={convertTo12HourFormat(hour.time.split(" ")[1])}
+            key={hour.time}
+          />
+        ))}
         <FontAwesomeIcon
           style={{
-            display: startIndex >= hourForecast().length - 5 ? "none" : "",
+            display: startIndex >= forecastday.hour.length - 5 ? "none" : "",
           }}
           onClick={handleScrollRight}
           icon={faArrowRight}
