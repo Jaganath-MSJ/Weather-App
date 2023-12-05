@@ -1,13 +1,15 @@
+import React from "react";
+import PropTypes from "prop-types";
 import { styled } from "styled-components";
 
-function MyClockComponent(props) {
-  const { hours, minutes } = props;
+function MyClockComponent({ hours, minutes }) {
   const minutesStyle = {
     transform: `rotate(${minutes * 6}deg)`,
   };
   const hoursStyle = {
     transform: `rotate(${hours * 30}deg)`,
   };
+
   return (
     <Clock>
       <div className="clock">
@@ -55,5 +57,10 @@ const Clock = styled.div`
     }
   }
 `;
+
+MyClockComponent.propTypes = {
+  hours: PropTypes.number.isRequired,
+  minutes: PropTypes.number.isRequired,
+};
 
 export default MyClockComponent;

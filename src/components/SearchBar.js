@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import { GoLocation } from "react-icons/go";
 import axios from "axios";
 
 function SearchBar({ setSearch, location, backgroundFun }) {
-  const [showSearch, setOnSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestedPlaces, setSuggestedPlaces] = useState([]);
   const handleInputChange = async (event) => {
@@ -28,7 +29,7 @@ function SearchBar({ setSearch, location, backgroundFun }) {
     setSearchQuery(name);
     setSearch(name);
     setSuggestedPlaces([]);
-    setOnSearch(!showSearch);
+    setShowSearch(!showSearch);
   };
   return (
     <Container color={backgroundFun}>
@@ -47,15 +48,20 @@ function SearchBar({ setSearch, location, backgroundFun }) {
               placeholder="Search for a place..."
             />
           )}
-          <FiSearch onClick={() => setOnSearch(!showSearch)} />
+          <FiSearch onClick={() => setShowSearch(!showSearch)} />
         </div>
       </div>
       {showSearch && (
         <ul className="suggestions">
-          {suggestedPlaces.map((place, index) => (
+          {suggestedPlaces.map((place) => (
             <li
-              key={index}
+              key={place}
               onClick={() => handlePlaceSelection(place.split(",")[0])}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === "Space") {
+                  handlePlaceSelection(place.split(",")[0]);
+                }
+              }}
             >
               {place.split(",")[0]}
             </li>
@@ -135,5 +141,11 @@ const Container = styled.div`
     }
   }
 `;
+
+SearchBar.propTypes = {
+  setSearch: PropTypes.func,
+  location: PropTypes.object,
+  backgroundFun: PropTypes.string,
+};
 
 export default SearchBar;
