@@ -58,7 +58,7 @@ function SearchBar({ setSearch, location, backgroundFun }) {
               key={place}
               onClick={() => handlePlaceSelection(place.split(",")[0])}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === "Space") {
+                if (e.keyCode === 13 || e.which === 13) {
                   handlePlaceSelection(place.split(",")[0]);
                 }
               }}
